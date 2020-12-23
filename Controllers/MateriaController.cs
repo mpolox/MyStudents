@@ -27,9 +27,8 @@ namespace MyStudents.Controllers
         [Route("GetAll")]
         public IActionResult Get()
         {
-            throw new ArgumentException("Falló este pedo");
-            //var myRespone = _repo.Get();
-            //return Ok(myRespone);
+            var myRespone = _repo.Get();
+            return Ok(myRespone);
         }
 
         /// <summary>
