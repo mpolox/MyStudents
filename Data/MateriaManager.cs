@@ -20,7 +20,8 @@ namespace MyStudents.Data
 
         Materia IMateria.Add(MateriaDto aMateria)
         {
-            bool isExisting = _context.Materias.Any(m => SchoolHelper.EsIgual(m.Name, aMateria.Name) && SchoolHelper.EsIgual(m.Room, aMateria.Room));
+            bool isExisting = _context.Materias.Any(m => m.Name.ToLower() == aMateria.Name.ToLower() && m.Room.ToLower() == aMateria.Room.ToLower());
+
             if (isExisting)
             {
                 return null;

@@ -11,9 +11,9 @@ namespace MyStudents.Interfaces
     public interface IStudent
     {
         IEnumerable<Student> Get();
-
         Student Get(int id);
-
-        Student Add(StudentDto aStudent);
+        Student Add(Student aStudent);
+        IEnumerable<Student> GetByStatus(bool v);
+        Student Delete(int id);
     }
 }

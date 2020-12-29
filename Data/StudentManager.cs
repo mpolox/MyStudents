@@ -17,26 +17,32 @@ namespace MyStudents.Data
             _context = context;
         }
 
-        public Student Add(StudentDto aStudent)
+        public Student Add(Student aStudent)
         {
-            Student myStudent = new Student
-            {
-                BirthDate = aStudent.BirthDate,
-                FatherName = aStudent.FatherName,
-                MotherName = aStudent.MotherName,
-                Name = aStudent.Name,
-                StudentCode = aStudent.StudentCode
-            };
-            _context.Add(myStudent);
+            _context.Add(aStudent);
             _context.SaveChanges();
+            return (aStudent);
+        }
 
-            return (myStudent);
+        public Student Delete(int id)
+        {
+            Student myStudent = _context.Students.FirstOrDefault(s => s.Id == id);
+            myStudent.IsActive = false;
+            _context.Update(myStudent);
+            _context.SaveChanges();
+            return myStudent;
+        }
+
+        public IEnumerable<Student> GetByStatus(bool myStatus)
+        {
+            var myResponse = _context.Students.Where(s => s.IsActive == myStatus).ToList();
+            return myResponse;
         }
 
         Student IStudent.Get(int id)
         {
-            var myResponse = _context.Students.FirstOrDefault(s => s.Id == id);
-            return myResponse;
+            Student myStudent = _context.Students.FirstOrDefault(s => s.Id == id);
+            return myStudent;
         }
 
         IEnumerable<Student> IStudent.Get()

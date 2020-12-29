@@ -52,7 +52,11 @@ namespace MyStudents.Controllers
         public IActionResult Add(MateriaDto m)
         {
             var myResponse = _repo.Add(m);
-            return Ok(myResponse);
+            if (myResponse != null)
+            {
+                return Ok(myResponse);
+            }
+            return BadRequest("Already Exists");
         }
 
 

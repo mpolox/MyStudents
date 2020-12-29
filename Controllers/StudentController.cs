@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MyStudents.Data;
 using MyStudents.DTOs;
 using MyStudents.Interfaces;
@@ -15,9 +16,12 @@ namespace MyStudents.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudent _repo;
-        public StudentController(IStudent repo)
+        private readonly IMapper _mapper;
+
+        public StudentController(IStudent repo, IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -28,8 +32,18 @@ namespace MyStudents.Controllers
         [Route("GetAll")]
         public IActionResult GetStudents()
         {
-            var myRespone = _repo.Get();
-            return Ok(myRespone);
+            IEnumerable<Student> myStudents = _repo.Get();
+            var myResponse = _mapper.Map<IEnumerable<StudentDto>>(myStudents);
+            return Ok(myResponse);
+        }
+
+        [HttpGet]
+        [Route("GetActive")]
+        public IActionResult GetActiveStudents()
+        {
+            IEnumerable<Student> myStudents = _repo.GetByStatus(true);
+            var myResponse = _mapper.Map<IEnumerable<StudentDto>>(myStudents);
+            return Ok(myResponse);
         }
 
         /// <summary>
@@ -40,25 +54,34 @@ namespace MyStudents.Controllers
         [HttpGet("{id}")]
         public IActionResult GetStudent(int id)
         {
-            var myResponse = _repo.Get(id);
-            if (myResponse != null)
+            Student myStudent = _repo.Get(id);
+            if (myStudent != null)
             {
+                var myResponse = _mapper.Map<StudentDto>(myStudent);
                 return Ok(myResponse);
             }
             return NotFound(id);            
         }
 
-
         [HttpPost]
         public IActionResult AddStudent(StudentDto aStudent)
         {
-            Console.WriteLine(aStudent.Name);
-            var myResponse =_repo.Add(aStudent);
+            Student myStudent = _mapper.Map<Student>(aStudent);
+            myStudent = _repo.Add(myStudent);
+            var myResponse = _mapper.Map<StudentDto>(myStudent);
             return Ok(myResponse);
         }
 
-
-
-
+        [HttpDelete]
+        public IActionResult Delete(int aStudentId)
+        {
+            Student myStudent = _repo.Delete(aStudentId);
+            if (myStudent != null)
+            {
+                var myResponse = _mapper.Map<StudentDto>(myStudent);
+                return Ok(myResponse);
+            }
+            return NotFound();
+        }
     }
 }

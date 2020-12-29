@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MyStudents.Data;
 using MyStudents.Interfaces;
+using System;
 
 namespace MyStudents
 {
@@ -29,11 +31,12 @@ namespace MyStudents
             services.AddDbContext<SchoolContext>(opt => opt.UseSqlServer
             (Configuration.GetConnectionString("SchoolConnection")));
 
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddControllers();
             services.AddScoped<IStudent, StudentManager>();
             services.AddScoped<ITeacher, TeacherManager>();
             services.AddScoped<IMateria, MateriaManager>();
-
 
             services.AddSwaggerGen(c =>
             {
