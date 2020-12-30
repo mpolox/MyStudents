@@ -36,7 +36,7 @@ namespace MyStudents
             services.AddControllers();
             services.AddScoped<IStudent, StudentManager>();
             services.AddScoped<ITeacher, TeacherManager>();
-            services.AddScoped<IMateria, MateriaManager>();
+            services.AddScoped<MateriaManager, MateriaManager>();
 
             services.AddSwaggerGen(c =>
             {

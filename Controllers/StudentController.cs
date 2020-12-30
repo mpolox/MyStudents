@@ -33,7 +33,7 @@ namespace MyStudents.Controllers
         public IActionResult GetStudents()
         {
             IEnumerable<Student> myStudents = _repo.Get();
-            var myResponse = _mapper.Map<IEnumerable<StudentDto>>(myStudents);
+            var myResponse = _mapper.Map<IEnumerable<StudentDtoRead>>(myStudents);
             return Ok(myResponse);
         }
 
@@ -42,34 +42,37 @@ namespace MyStudents.Controllers
         public IActionResult GetActiveStudents()
         {
             IEnumerable<Student> myStudents = _repo.GetByStatus(true);
-            var myResponse = _mapper.Map<IEnumerable<StudentDto>>(myStudents);
+            var myResponse = _mapper.Map<IEnumerable<StudentDtoRead>>(myStudents);
             return Ok(myResponse);
         }
 
-        /// <summary>
-        /// Get a student by a given Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
         [HttpGet("{id}")]
         public IActionResult GetStudent(int id)
         {
             Student myStudent = _repo.Get(id);
             if (myStudent != null)
             {
-                var myResponse = _mapper.Map<StudentDto>(myStudent);
+                var myResponse = _mapper.Map<StudentDtoRead>(myStudent);
                 return Ok(myResponse);
             }
             return NotFound(id);            
         }
 
         [HttpPost]
-        public IActionResult AddStudent(StudentDto aStudent)
+        public IActionResult AddStudent(StudentDtoWrite aStudent)
         {
             Student myStudent = _mapper.Map<Student>(aStudent);
-            myStudent = _repo.Add(myStudent);
-            var myResponse = _mapper.Map<StudentDto>(myStudent);
-            return Ok(myResponse);
+            if (_repo.FindByCode(myStudent) == null)
+            {
+                myStudent = _repo.Add(myStudent);
+                var myResponse = _mapper.Map<StudentDtoWrite>(myStudent);
+                return Ok(myResponse);
+            } else
+            {
+                return BadRequest("Student already exists");
+            }
+            
         }
 
         [HttpDelete]
@@ -78,7 +81,7 @@ namespace MyStudents.Controllers
             Student myStudent = _repo.Delete(aStudentId);
             if (myStudent != null)
             {
-                var myResponse = _mapper.Map<StudentDto>(myStudent);
+                var myResponse = _mapper.Map<StudentDtoRead>(myStudent);
                 return Ok(myResponse);
             }
             return NotFound();

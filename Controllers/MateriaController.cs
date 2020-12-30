@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyStudents.Data;
 using MyStudents.DTOs;
 using MyStudents.Interfaces;
 using System;
@@ -12,17 +13,12 @@ namespace MyStudents.Controllers
     [Route("Materia")]
     public class MateriaController : Controller
     {
-        private readonly IMateria _repo;
-        public MateriaController(IMateria repo)
+        private readonly MateriaManager _repo;
+        public MateriaController(MateriaManager repo)
         {
             _repo = repo;
         }
 
-
-        /// <summary>
-        /// Get all students
-        /// </summary>
-        /// <returns></returns>
         [HttpGet]
         [Route("GetAll")]
         public IActionResult Get()
@@ -31,11 +27,6 @@ namespace MyStudents.Controllers
             return Ok(myRespone);
         }
 
-        /// <summary>
-        /// Get a student by a given Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -46,7 +37,6 @@ namespace MyStudents.Controllers
             }
             return NotFound(id);
         }
-
 
         [HttpPost]
         public IActionResult Add(MateriaDto m)
@@ -59,7 +49,6 @@ namespace MyStudents.Controllers
             return BadRequest("Already Exists");
         }
 
-
         [HttpDelete]
         public IActionResult Delete(int id)
         {
@@ -69,6 +58,5 @@ namespace MyStudents.Controllers
             }
             return NotFound();
         }
-
     }
 }

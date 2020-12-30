@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyStudents.Data
 {
-    public class MateriaManager : IMateria
+    public class MateriaManager 
     {
         private readonly SchoolContext _context;
 
@@ -18,7 +18,7 @@ namespace MyStudents.Data
             _context = context;
         }
 
-        Materia IMateria.Add(MateriaDto aMateria)
+        public Materia Add(MateriaDto aMateria)
         {
             bool isExisting = _context.Materias.Any(m => m.Name.ToLower() == aMateria.Name.ToLower() && m.Room.ToLower() == aMateria.Room.ToLower());
 
@@ -37,13 +37,13 @@ namespace MyStudents.Data
             return myResponse;
         }
 
-        Materia IMateria.Get(int anId)
+        public Materia Get(int anId)
         {
             var myResponse = _context.Materias.FirstOrDefault(m => m.Id == anId);
             return myResponse;
         }
 
-        IEnumerable<Materia> IMateria.Get()
+        public IEnumerable<Materia> Get()
         {
             var myResponse = _context.Materias.ToList();
             return myResponse;

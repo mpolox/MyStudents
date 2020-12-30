@@ -50,5 +50,13 @@ namespace MyStudents.Data
             var myResponse = _context.Students.ToList();
             return myResponse;
         }
+
+        public Student FindByCode(Student aStudent)
+        {
+            var response = _context.Students.FirstOrDefault(s => 
+            s.StudentCode.ToLower() == aStudent.StudentCode.ToLower());
+            return response;
+        }
+
     }
 }

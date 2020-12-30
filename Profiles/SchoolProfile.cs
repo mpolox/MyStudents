@@ -13,9 +13,13 @@ namespace MyStudents.Profiles
 
         public SchoolProfile()
         {
-            CreateMap<Student, StudentDto>();
-            CreateMap<StudentDto, Student>();
+            //Student
+            CreateMap<Student, StudentDtoRead>();
+            CreateMap<StudentDtoRead, Student>();
+            CreateMap<Student, StudentDtoWrite>();
+            CreateMap<StudentDtoWrite, Student>();
 
+            //Teacher
             CreateMap<Teacher, TeacherDto>();
             CreateMap<TeacherDto, Teacher>();
         }

@@ -65,10 +65,10 @@ namespace MyStudents.Controllers
         [HttpDelete]
         public IActionResult Delete(int anId)
         {
-            Teacher myTeacher = _repo.Delete(anId);
-            if (myTeacher != null)
+            Teacher myItem = _repo.Delete(anId);
+            if (myItem != null)
             {
-                var myResponse = _mapper.Map<TeacherDto>(myTeacher);
+                var myResponse = _mapper.Map<TeacherDto>(myItem);
                 return Ok(myResponse);
             }
             return NotFound();

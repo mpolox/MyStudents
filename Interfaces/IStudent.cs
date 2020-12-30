@@ -15,5 +15,6 @@ namespace MyStudents.Interfaces
         Student Add(Student aStudent);
         IEnumerable<Student> GetByStatus(bool v);
         Student Delete(int id);
+        Student FindByCode(Student aStudent);
     }
 }
